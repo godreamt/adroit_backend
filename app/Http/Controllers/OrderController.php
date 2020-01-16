@@ -50,7 +50,7 @@ class OrderController extends Controller
                                 'id'=>$product->id,
                                 'productName' => $product->title,
                                 'offerPrice' => $product->offerPrice,
-                                'regularPrice' => $product->regularPrice,
+                                'regularPrice' => $item['productPrice'],
                                 'salesPoints' => $product->salesPoints,
                                 'featuredImage' => $product->featuredImage,
                                 'catId' => $product->catId,
@@ -58,7 +58,7 @@ class OrderController extends Controller
                                 'category' => $product->category,
                                 'subCategory' => $product->subCategory,
                             ]);
-                        $orderItem->productPrice = $product->regularPrice;
+                        $orderItem->productPrice = (float)$item['productPrice'];
                         $orderItem->quantity = $item['quantity'];
                         $orderItem->totalPrice = ((float)$orderItem->productPrice) * ((int)$orderItem->quantity);
                         $grandTotal += $orderItem->totalPrice; 

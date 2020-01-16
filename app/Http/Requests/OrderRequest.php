@@ -30,6 +30,7 @@ class OrderRequest extends FormRequest
             'vendor_id' => 'required|exists:users,id',
             'items' => 'required',
             'items.*.product_id' => 'required|exists:products,id',
+            'items.*.productPrice' => 'required|numeric|between:1,500000',
             'items.*.quantity' => 'required|numeric|between:1,500000'
         ];
     }
