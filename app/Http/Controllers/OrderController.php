@@ -9,6 +9,7 @@ use App\OrderItem;
 use Illuminate\Http\Request;
 use App\Http\Requests\OrderRequest;
 use Illuminate\Pagination\Paginator;
+use App\Http\Helpers\FunctionHelper;
 use App\Http\Requests\UpdateOrderStatusRequest;
 
 class OrderController extends Controller
@@ -93,10 +94,14 @@ class OrderController extends Controller
                     return response(["Can not change status of old order"], 400);
                 }
                 if($order->orderStatus == 'new' && $request->status == 'approved') {
+                    $helper = new FunctionHelper();
+                    $monthlyTarget = $helper->getMonthlyTarget((new \Datetime())->format('Y-m-d'), $order->sold_by);
                     $order->approvedDate = new \Datetime();
-                    $vendor = User::find($order->vendor_id);
+                    $vendor = User::find($order->vendor_id); 
                     $vendor->vendorBalanceAmount = ((float) $vendor->vendorBalanceAmount) + ((float)$order->totalOrderAmount);
+                    $monthlyTarget->salesTargetReached = (float)$monthlyTarget->salesTargetReached + (float)$order->totalOrderAmount;
                     $vendor->save();
+                    $monthlyTarget->save();
                     $order->orderStatus = $request->status;
                 }else if($order->orderStatus == 'approved' && $request->status == 'delivered') {
                     $order->deliveredDate = new \Datetime();
