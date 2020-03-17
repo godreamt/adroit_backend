@@ -19,3 +19,4 @@ Route::get('/products/{slug}', 'WebHomeController@productPage');
 Route::get('/product/{slug}', 'WebHomeController@productDetailPage');
 Route::get('/careers', 'WebHomeController@careerPage');
 Route::get('/contact-us', 'WebHomeController@contactPage');
+Route::get('/privacy-policy', 'WebHomeController@privacyPage');

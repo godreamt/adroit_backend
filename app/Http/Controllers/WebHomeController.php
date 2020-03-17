@@ -109,4 +109,8 @@ class WebHomeController extends Controller
     public function contactPage(Request $request) {
         return view('contact');
     }
+
+    public function privacyPage(Request $request) {
+        return view('privacy');
+    }
 }
