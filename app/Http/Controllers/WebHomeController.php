@@ -72,6 +72,7 @@ class WebHomeController extends Controller
             'title' => 'Product',
             'description' => 'description',
             'products' => $products,
+            'category' => $request->slug,
         ]);
     }
 

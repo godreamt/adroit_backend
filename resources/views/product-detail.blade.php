@@ -42,8 +42,31 @@
             <div>
                 {!! $product->description !!}
             </div>
+
+            @if (!empty($product->coverageImage))
+            <div class="w-100 mt-5">
+                <h3>Coverage</h3>
+                <img src="{{ $product->coverageImage}}" class="w-100" alt="">
+            </div>
+            @endif
+
+            @if (!empty($product->shadeCardImage))
+            <div class="w-100 mt-5">
+                <h3>Shade card</h3>
+                <img src="{{ $product->shadeCardImage}}" class="w-100" alt="">
+            </div>
+            @endif
+
+            @if (!empty($product->brochureFile))
+            <div class="w-100 mt-5">
+                <h3>Brouchere PDF</h3>
+                <a href="{{ $product->brochureFile}}" class="btn btn-primary">Download Now</a>
+            </div>
+            @endif
         </div>
     </section>
+
+
 
     
     <section class="inner_page_section_padding about_category_section">

@@ -23,6 +23,7 @@ Route::get('category/list', 'CategoryController@getCategory');
 Route::post('sub-category/web-list', 'CategoryController@getSubCategoryByCatList');
 Route::post('site-manager/contact', 'SiteManagerController@updateContactUs');
 Route::post('site-manager/enquiry', 'SiteManagerController@updateEnquiry');
+Route::post('product/list/paginate', 'ProductController@getProductsWithPagination');
 Route::group(['middleware' => 'jwt.auth'], function(){
     Route::get('auth/user', 'AuthController@user');
     Route::post('auth/logout', 'AuthController@logout');
@@ -67,7 +68,6 @@ Route::group(['middleware' => 'jwt.auth'], function(){
     //product
     Route::post('product', 'ProductController@updateProduct');
     Route::get('product/list', 'ProductController@getProducts');
-    Route::post('product/list/paginate', 'ProductController@getProductsWithPagination');
     Route::get('product/{id}', 'ProductController@getProduct');
     Route::delete('product/{id}', 'ProductController@deleteProduct');
 

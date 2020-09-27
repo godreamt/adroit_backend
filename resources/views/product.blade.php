@@ -7,8 +7,12 @@
 
 
 @section('body')
+<style>
+    [v-cloak] {display: none}
+</style>
 
-<section class="inner_page_section_padding" id="product-page-app">
+<input type="hidden" id="category" value="{{ $category }}">
+<section class="inner_page_section_padding" id="product-page-app" v-cloak>
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-auto">
@@ -51,95 +55,50 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg">
-                    <div class="product_list_cards mb-5" id="productListContent">
+                    <div class="product_list_cards mb-5">
                         <ul class="list-unstyled">
-                            @foreach($products as $product)
-                            <li class="ease">
+                            <li class="ease" v-for="item,index in productList">
                                 <div class="product_card_wrapper row">
                                     <div class="col-md-4">
-                                        <img src="{{ $product->featuredImage }}" alt="" class="img-fluid">
+                                        <img :src="item.featuredImage" alt="" class="img-fluid">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="product_list_inner p_relative">
-                                            @if($product->bestSeller)
-                                            <span class="d-inline-block bestTag">Best seller</span>
-                                            @endif
-                                            <h2>{{ $product->title }}</h2>
-                                            <p><small class="text-muted">{{ $product->category }} / {{ $product->sub_category }}</small></p>
-                                            <div>
-                                                {!! $product->shortDescription !!}
+                                            <span class="d-inline-block bestTag" v-if="item.bestSeller">Best seller</span>
+                                            <h2><% item.title %></h2>
+                                            <p><small class="text-muted"><% item.categoryTitle %> / <% item.subCategoryTitle %></small></p>
+                                            <div v-html="item.shortDescription">
                                             </div>
-                                            <a href="/product/{{$product->slug}}" class="btn product_more_btn">View More</a>
+                                            <a :href="'/product/'+item.slug" class="btn product_more_btn">View More</a>
                                         </div>
                                     </div>
                                 </div>
                             </li>
-                            @endforeach
-
-                            @if ( $products->total() <= 0) 
-                                <li class="ease">
+                                <li class="ease" v-if="productList.length <= 0">
                                     <div class="text-center">
                                         <h5 class="p-5">No Products to display</h5>
                                     </div>
                                 </li>
-                            @endif
-                            <!-- <li class="ease">
-                                <div class="product_card_wrapper row">
-                                    <div class="col-md-4">
-                                        <img src="/assets/images/p1.jpg" alt="" class="img-fluid">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="product_list_inner p_relative">
-                                            <span class="d-inline-block bestTag">Best seller</span>
-                                            <h2>Product Name</h2>
-                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae, at
-                                                earum! Aut, asperiores. Quod, exercitationem accusamus adipisci
-                                                blanditiis sint obcaecati delectus facilis laborum sapiente qui odit
-                                                commodi, explicabo et excepturi.</p>
-                                            <a href="#" class="btn product_more_btn">View More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="ease">
-                                <div class="product_card_wrapper row">
-                                    <div class="col-md-4">
-                                        <img src="/assets/images/p1.jpg" alt="" class="img-fluid">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="product_list_inner p_relative">
-                                            <span class="d-inline-block bestTag">Best seller</span>
-                                            <h2>Product Name</h2>
-                                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae, at
-                                                earum! Aut, asperiores. Quod, exercitationem accusamus adipisci
-                                                blanditiis sint obcaecati delectus facilis laborum sapiente qui odit
-                                                commodi, explicabo et excepturi.</p>
-                                            <a href="#" class="btn product_more_btn">View More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li> -->
                         </ul>
                     </div>
 
                     <input type="hidden" id="totalItems" value="{{ $products->total()}}">
                     <input type="hidden" id="perPageItems" value="{{ $products->perPage()}}">
-                    <input type="hidden" id="currentPage" value="{{ $products->currentPage()}}">
 
                     <nav class="site_pagination">
                         <ul class="pagination justify-content-end">
-                            <li class="page-item" @click="gotoPrevious()">
+                            <li class="page-item" v-if="currentPage > 1" @click="gotoPrevious()">
                                 <span class="page-link">Previous</span>
                             </li>
-                            <li class="page-item"><a class="page-link" href="javascript:;">1</a></li>
+                            <li class="page-item"  v-if="currentPage > 1"><a class="page-link" href="javascript:;">1</a></li>
                             <li class="page-item active">
                             <span class="page-link">
                                 <% currentPage %>
                                 <span class="sr-only">(current)</span>
                             </span>
                             </li>
-                            <li class="page-item"><a class="page-link" href="javascript:;"><% totalPages %></a></li>
-                            <li class="page-item" @click="gotoNext()">
+                            <li class="page-item"  v-if="currentPage < lastPage"><a class="page-link" href="javascript:;"><% lastPage %></a></li>
+                            <li class="page-item"  v-if="currentPage < lastPage"  @click="gotoNext()">
                                 <a class="page-link" href="javascript:;">Next</a>
                             </li>
                         </ul>

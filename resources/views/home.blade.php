@@ -23,7 +23,7 @@
             <div class="clents_wrapper scrollme">
                 <h5 class="animateme" data-when="view" data-from="0.75" data-to="0" data-opacity="0" data-translatey="100">We are In</h5>
                 <div class="row">
-                    <div class="col-lg col-md-3 col-sm-4 col-6">
+                    <!-- <div class="col-lg col-md-3 col-sm-4 col-6">
                         <div class="logo_box text-center animateme" data-when="span" data-from="0.10" data-to="0" data-opacity="0" data-translatey="80">
                             <img src="/assets/images/location-pin.svg" class="img-fluid">
                             Kundapura
@@ -34,26 +34,26 @@
                             <img src="/assets/images/location-pin.svg" class="img-fluid">
                             Upupi
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-lg col-md-3 col-sm-4 col-6">
                         <div class="logo_box text-center animateme" data-when="span" data-from="0.50" data-to="0" data-opacity="0" data-translatey="160">
                             <img src="/assets/images/location-pin.svg" class="img-fluid">
-                            Mangalore
+                            Karnataka
                         </div>
                     </div>
                     <div class="col-lg col-md-3 col-sm-4 col-6">
                         <div class="logo_box text-center animateme" data-when="span" data-from="0.70" data-to="0" data-opacity="0" data-translatey="200">
                             <img src="/assets/images/location-pin.svg" class="img-fluid">
-                            Bhatkala
+                            Kerala
                         </div>
                     </div>
                     <div class="col-lg col-md-3 col-sm-4 col-6">
                         <div class="logo_box text-center animateme" data-when="span" data-from="0.90" data-to="0" data-opacity="0" data-translatey="240">
                             <img src="/assets/images/location-pin.svg" class="img-fluid">
-                            Karkala
+                            Thamilnadu
                         </div>
                     </div>
-                    <div class="w-100 d-none d-lg-block"></div>
+                    <!-- <div class="w-100 d-none d-lg-block"></div>
                     <div class="col-lg col-md-3 col-sm-4 col-6">
                         <div class="logo_box text-center animateme" data-when="span" data-from="0.10" data-to="0" data-opacity="0" data-translatey="80">
                             <img src="/assets/images/location-pin.svg" class="img-fluid">
@@ -83,7 +83,7 @@
                             <img src="/assets/images/location-pin.svg" class="img-fluid">
                             Maharashtra
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

@@ -62,6 +62,57 @@ class ProductController extends Controller
             }
         }
 
+        if(!empty($request->coverageImage)) {
+            $mimetype=mime_content_type($request['coverageImage']);
+            if($mimetype != 'image/png' && $mimetype != "image/jpeg" && $mimetype != "image/jpg"){
+                return response()->json(['errors'=>['data'=>["Please add png or jpeg image."]]], 500);
+            }
+            
+            $base64_str = substr($request->coverageImage, strpos($request->coverageImage, ",")+1);
+            $image = base64_decode($base64_str);
+            $imageName = $product->slug.uniqid().".png";
+            \File::put(public_path(). '/uploads/coverage/' . $imageName, $image);
+            if(!empty($request->id) && !empty($product->coverageImage)) {
+                unlink(public_path().$product->coverageImage);
+            }
+            $product->coverageImage='/uploads/coverage/' . $imageName;
+            // file_put_contents($destinationPath.$category->slug.".png", $image);
+        }
+
+        if(!empty($request->shadeCardImage)) {
+            $mimetype=mime_content_type($request['shadeCardImage']);
+            if($mimetype != 'image/png' && $mimetype != "image/jpeg" && $mimetype != "image/jpg"){
+                return response()->json(['errors'=>['data'=>["Please add png or jpeg image."]]], 500);
+            }
+            
+            $base64_str = substr($request->shadeCardImage, strpos($request->shadeCardImage, ",")+1);
+            $image = base64_decode($base64_str);
+            $imageName = $product->slug.uniqid().".png";
+            \File::put(public_path(). '/uploads/shadeCard/' . $imageName, $image);
+            if(!empty($request->id) && !empty($product->shadeCardImage)) {
+                unlink(public_path().$product->shadeCardImage);
+            }
+            $product->shadeCardImage='/uploads/shadeCard/' . $imageName;
+            // file_put_contents($destinationPath.$category->slug.".png", $image);
+        }
+
+        if(!empty($request->brochureFile)) {
+            $mimetype=mime_content_type($request['brochureFile']);
+            if($mimetype != 'application/pdf'){
+                return response()->json(['errors'=>['data'=>["Please add pdf file for brochure."]]], 500);
+            }
+            
+            $base64_str = substr($request->brochureFile, strpos($request->brochureFile, ",")+1);
+            $image = base64_decode($base64_str);
+            $imageName = $product->slug.uniqid().".pdf";
+            \File::put(public_path(). '/uploads/brochure/' . $imageName, $image);
+            if(!empty($request->id) && !empty($product->brochureFile)) {
+                unlink(public_path().$product->brochureFile);
+            }
+            $product->brochureFile='/uploads/brochure/' . $imageName;
+            // file_put_contents($destinationPath.$category->slug.".png", $image);
+        }
+
         try {
             $product->save();
             return response(["Product Updated successfully"], 200);
@@ -128,7 +179,7 @@ class ProductController extends Controller
     public function getProductsWithPagination(Request $request) {
         $product =  Products::leftJoin('sub_categories', 'sub_categories.id', 'products.sub_category_id')
                         ->leftJoin('categories', 'categories.id', 'sub_categories.category_id')
-                        ->distinct()
+                        // ->distinct()
                         ->select('products.id', 
                                 'products.title', 
                                 'products.slug', 
@@ -166,14 +217,22 @@ class ProductController extends Controller
             $product =  $product->where('products.bestSeller', $bestSeller);
         }
 
+        $categories=$request->categories;
+        if(is_array($categories) && sizeof($categories) > 0){
+            $product = $product->whereIn('categories.id', $request->categories);
+        }
+        $subCategories=$request->subCategories;
+        if(is_array($subCategories) && sizeof($subCategories) > 0){
+            $product = $product->whereIn('sub_categories.id', $request->subCategories);
+        }
         
         
         $currentPage = $request->pageNumber;
         Paginator::currentPageResolver(function () use ($currentPage) {
             return $currentPage;
         });
-
-        return $product->paginate(20);
+        
+        return $product->distinct('id')->paginate(20);
 
     }
 
